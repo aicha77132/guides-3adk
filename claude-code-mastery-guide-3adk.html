@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude Code Mastery Guide — 3ADKAgency</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Inter', -apple-system, system-ui, sans-serif; background: #FAFAFA; min-height: 100vh; -webkit-font-smoothing: antialiased; }
+  @keyframes fadeSlide { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
+  ::-webkit-scrollbar { width: 4px; height: 4px; }
+  ::-webkit-scrollbar-thumb { background: #ccc; border-radius: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+
+  .header {
+    background: linear-gradient(135deg, #0d1117 0%, #161b22 50%, #1a1f2b 100%);
+    padding: 32px 24px 28px; color: #fff; position: relative; overflow: hidden;
+  }
+  .header-glow {
+    position: absolute; top: -30px; right: -30px; width: 140px; height: 140px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(139,92,246,0.15) 0%, transparent 70%);
+  }
+  .header-inner { position: relative; }
+  .header-badge { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+  .header-tag {
+    font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+    color: #8B5CF6; background: rgba(139,92,246,0.15); padding: 3px 10px; border-radius: 6px;
+  }
+  .header h1 { font-size: 24px; font-weight: 800; margin: 8px 0 6px; letter-spacing: -0.5px; line-height: 1.2; }
+  .header h1 span { color: #8B5CF6; }
+  .header p { font-size: 13px; color: #8b949e; margin: 0; line-height: 1.5; }
+
+  .nav {
+    display: flex; gap: 6px; padding: 12px 16px; overflow-x: auto;
+    background: #fff; border-bottom: 1px solid #eee; position: sticky; top: 0; z-index: 10;
+  }
+  .nav-btn {
+    display: flex; align-items: center; gap: 5px; padding: 7px 12px; border-radius: 8px;
+    border: none; cursor: pointer; font-size: 12px; font-weight: 500;
+    background: transparent; color: #666; white-space: nowrap;
+    transition: all 200ms ease-out; font-family: inherit;
+  }
+  .nav-btn:hover { background: #f3f4f6; }
+  .nav-btn.active { font-weight: 700; color: #fff; }
+  .nav-btn .nav-icon { font-size: 14px; }
+
+  .content { padding: 20px 16px 40px; max-width: 780px; margin: 0 auto; }
+  .section-header { margin-bottom: 20px; }
+  .section-header-row { display: flex; align-items: center; gap: 10px; margin-bottom: 4px; }
+  .section-header-icon { font-size: 24px; }
+  .section-header h2 { font-size: 20px; font-weight: 800; color: #1a1a1a; letter-spacing: -0.3px; }
+  .section-header .subtitle { font-size: 13px; color: #888; margin: 2px 0 0; }
+  .section-bar { height: 3px; width: 50px; border-radius: 3px; margin-top: 12px; margin-left: 34px; }
+
+  .tip-card {
+    background: #fff; border-radius: 12px; border: 1px solid #E0E0E0;
+    padding: 16px 20px; margin-bottom: 12px; cursor: pointer;
+    transition: all 250ms cubic-bezier(0.23, 1, 0.32, 1);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  }
+  .tip-card.open { box-shadow: 0 4px 20px var(--accent-shadow); }
+  .tip-header { display: flex; align-items: center; gap: 10px; justify-content: space-between; }
+  .tip-header-left { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0; }
+  .priority-badge {
+    font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 6px;
+    letter-spacing: 0.5px; white-space: nowrap; flex-shrink: 0;
+  }
+  .tip-title {
+    font-weight: 600; font-size: 14px; color: #1a1a1a;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .tip-toggle {
+    transition: transform 200ms ease-out; font-size: 14px; color: #999; flex-shrink: 0;
+    display: inline-block;
+  }
+  .tip-toggle.open { transform: rotate(180deg); }
+  .tip-body { margin-top: 14px; animation: fadeSlide 250ms ease-out; }
+  .tip-body p { font-size: 13px; color: #444; line-height: 1.65; margin: 0 0 14px; }
+
+  .code-block {
+    background: #0d1117; color: #e6edf3; padding: 14px 16px; border-radius: 8px;
+    font-size: 11.5px; line-height: 1.55; overflow-x: auto; margin: 0 0 14px;
+    font-family: 'JetBrains Mono', 'Fira Code', monospace; white-space: pre;
+    border: 1px solid #30363d; position: relative;
+  }
+  .copy-btn {
+    position: absolute; top: 8px; right: 8px; background: #21262d; border: 1px solid #30363d;
+    color: #8b949e; padding: 4px 10px; border-radius: 5px; font-size: 10px; cursor: pointer;
+    font-family: 'Inter', sans-serif; transition: all 150ms;
+  }
+  .copy-btn:hover { background: #30363d; color: #e6edf3; }
+  .copy-btn.copied { background: #238636; color: #fff; border-color: #238636; }
+
+  .why-box {
+    border-left: 3px solid var(--accent); padding: 10px 14px; border-radius: 0 8px 8px 0;
+    font-size: 12px; color: #333; line-height: 1.55;
+  }
+  .why-box strong { color: var(--accent); }
+
+  .footer { padding: 16px 20px; border-top: 1px solid #eee; background: #fff; text-align: center; }
+  .footer p { font-size: 11px; color: #aaa; }
+
+  @media print {
+    .nav { position: static; }
+    .tip-card { break-inside: avoid; }
+    .copy-btn { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-glow"></div>
+  <div class="header-inner">
+    <div class="header-badge">
+      <span style="font-size:28px">⚡</span>
+      <span class="header-tag">3ADKAgency</span>
+    </div>
+    <h1>Claude Code<br><span>Mastery Guide</span></h1>
+    <p id="tipCount"></p>
+  </div>
+</div>
+
+<div class="nav" id="nav"></div>
+<div class="content" id="content"></div>
+<div class="footer"><p>Guide Claude Code 2026 — 3ADKAgency • Mis à jour Mai 2026</p></div>
+
+<script>
+const sections = [
+  {
+    id: "foundation", icon: "🏗️", title: "Fondations du Projet", subtitle: "Structurer avant de coder",
+    color: "#E8F5E9", accent: "#2E7D32",
+    tips: [
+      {
+        title: "CLAUDE.md — la mémoire permanente", priority: "CRITIQUE",
+        content: "Créer un fichier CLAUDE.md à la racine du projet. C'est le cerveau persistant de Claude Code entre les sessions. Il doit contenir : objectif du projet, stack technique, conventions de nommage, structure des dossiers, et règles métier clés.",
+        code: "# CLAUDE.md — Exemple\n\n## Projet\nAPI REST pour gestion de factures PME\n\n## Stack\n- Backend: Node.js + Express\n- DB: PostgreSQL + Prisma\n- Auth: JWT + refresh tokens\n\n## Conventions\n- camelCase pour variables/fonctions\n- PascalCase pour classes/composants\n- Fichiers en kebab-case\n- Tests: *.test.ts à côté du fichier source\n\n## Règles métier\n- TVA = 20% par défaut\n- Numérotation factures: FAC-YYYY-XXXXX\n- Statuts: brouillon → envoyée → payée",
+        why: "Sans CLAUDE.md, chaque nouvelle session repart de zéro. Avec, Claude comprend instantanément le contexte."
+      },
+      {
+        title: ".claudeignore — réduire le bruit", priority: "IMPORTANT",
+        content: "Comme un .gitignore, mais pour Claude. Exclure tout ce qui pollue le contexte : node_modules, fichiers de build, logs, assets binaires. Moins de bruit = meilleure compréhension.",
+        code: "# .claudeignore\nnode_modules/\ndist/\nbuild/\n*.log\n*.lock\ncoverage/\n.env*\n*.png\n*.jpg\n*.woff2",
+        why: "La fenêtre de contexte est précieuse. Chaque fichier inutile dilue la qualité des réponses."
+      },
+      {
+        title: "Règles de refus (mode auto)", priority: "SÉCURITÉ",
+        content: "Définir des garde-fous pour le mode automatique. Claude Code peut exécuter des commandes : configurer les actions interdites protège contre les erreurs destructrices.",
+        code: "# Dans les settings Claude Code\n# Actions bloquées en mode auto :\n- rm -rf (suppression récursive)\n- DROP TABLE / DROP DATABASE\n- git push --force sur main\n- Modification de .env.production\n- Toute commande sudo",
+        why: "Le mode auto accélère le workflow mais sans garde-fous, un agent autonome peut causer des dégâts irréversibles."
+      }
+    ]
+  },
+  {
+    id: "workflow", icon: "⚡", title: "Workflow Optimal", subtitle: "Travailler avec Claude, pas contre lui",
+    color: "#E3F2FD", accent: "#1565C0",
+    tips: [
+      {
+        title: "Lire AVANT d'éditer", priority: "RÈGLE D'OR",
+        content: "Toujours demander à Claude de lire et comprendre le code existant avant de le modifier. Un agent qui édite sans contexte produit des conflits et des régressions.",
+        code: '# ❌ Mauvais\n"Ajoute la validation email au formulaire"\n\n# ✅ Bon\n"Lis le fichier components/UserForm.tsx\net la logique de validation dans utils/validators.ts,\npuis ajoute la validation email\nen suivant le même pattern"',
+        why: "Claude ne connaît pas votre code. Sans lecture préalable, il invente un pattern qui peut contredire l'existant."
+      },
+      {
+        title: "Donner le POURQUOI, pas juste le QUOI", priority: "CRITIQUE",
+        content: "Un prompt avec intention produit un code 10x meilleur. Claude peut prendre des décisions architecturales intelligentes quand il comprend l'objectif métier.",
+        code: '# ❌ Mauvais\n"Ajoute un champ date au formulaire"\n\n# ✅ Bon\n"Les clients TPE oublient souvent de relancer\nleurs factures impayées.\nAjoute un champ \'date d\'échéance\' au formulaire\nde création de facture, avec un rappel\nautomatique J-3 par email.\nL\'objectif est de réduire les impayés\nde 30%."',
+        why: "Avec le pourquoi, Claude ajoute spontanément la validation de date, le calcul J-3, et le template email."
+      },
+      {
+        title: "Tâches atomiques et vérifiables", priority: "MÉTHODE",
+        content: "Découper chaque feature en micro-tâches. Une tâche = un changement testable. Ne jamais demander 'fais tout le backend' d'un coup.",
+        code: '# ❌ Trop large\n"Crée le système d\'authentification complet"\n\n# ✅ Atomique — étape par étape\n1. "Crée le modèle User avec Prisma\n   (email, passwordHash, role)"\n2. "Ajoute la route POST /auth/register\n   avec validation Zod"\n3. "Ajoute la route POST /auth/login\n   avec génération JWT"\n4. "Ajoute le middleware auth\n   qui vérifie le token JWT"\n5. "Écris les tests pour chaque route auth"',
+        why: "Chaque étape est vérifiable. Si l'étape 3 a un bug, on ne reperd pas les étapes 1-2."
+      },
+      {
+        title: "/compact — garder le contexte frais", priority: "PERFORMANCE",
+        content: "Quand la conversation devient longue, utiliser /compact pour compresser le contexte plutôt que de repartir de zéro. Claude garde l'essentiel et libère de l'espace.",
+        code: "# Quand utiliser /compact ?\n\n→ Après 15-20 échanges\n→ Quand Claude commence à oublier\n  des décisions précédentes\n→ Avant d'attaquer une nouvelle feature\n  dans la même session\n→ Quand les réponses ralentissent\n\n# Alternative : /goal pour les tâches longues\n/goal \"Tous les tests passent\net le coverage est > 80%\"",
+        why: "/compact > relancer une session. Vous gardez l'historique des décisions sans le poids du contexte brut."
+      }
+    ]
+  },
+  {
+    id: "agents", icon: "🤖", title: "Agents & Parallélisme", subtitle: "Multiplier la puissance",
+    color: "#FFF3E0", accent: "#E65100",
+    tips: [
+      {
+        title: "claude agents — orchestration multi-sessions", priority: "AVANCÉ",
+        content: "La vue 'claude agents' permet de suivre plusieurs sessions en parallèle. Chaque agent travaille sur une tâche indépendante. Idéal pour paralléliser frontend/backend/tests.",
+        code: "# Architecture multi-agents\n\n┌─────────────────────────────────┐\n│         Agent Principal         │\n│     (orchestration, review)     │\n└──────────┬──────────────────────┘\n           │\n     ┌─────┴──────┬───────────┐\n     ▼            ▼           ▼\n┌─────────┐ ┌──────────┐ ┌────────┐\n│ Agent 1 │ │ Agent 2  │ │Agent 3 │\n│ Backend │ │ Frontend │ │ Tests  │\n│  API    │ │   UI     │ │  E2E   │\n└─────────┘ └──────────┘ └────────┘",
+        why: "Un seul agent fait tout séquentiellement. Trois agents spécialisés livrent 3x plus vite sur des tâches indépendantes."
+      },
+      {
+        title: "Git Worktrees — un agent par branche", priority: "PRO",
+        content: "Chaque agent Claude Code travaille dans son propre worktree Git. Pas de conflits, pas de locks, merge propre à la fin.",
+        code: "# Créer des worktrees parallèles\ngit worktree add ../projet-feat-auth feat/auth\ngit worktree add ../projet-feat-invoice feat/invoice\ngit worktree add ../projet-fix-perf fix/performance\n\n# Chaque agent travaille dans son worktree\n# Agent 1 → ../projet-feat-auth/\n# Agent 2 → ../projet-feat-invoice/\n# Agent 3 → ../projet-fix-perf/\n\n# Merge quand tout est prêt\ngit merge feat/auth\ngit merge feat/invoice",
+        why: "Le trio CLAUDE.md + skills + worktrees est LA méthode des power users. Mémoire stable + spécialisation + parallélisme."
+      },
+      {
+        title: "/goal — objectif persistant", priority: "NOUVEAU",
+        content: "La commande /goal garde Claude en tâche sur plusieurs tours jusqu'à atteindre une condition d'arrêt. Plus besoin de relancer manuellement.",
+        code: "# Exemples de goals efficaces\n\n/goal \"Tous les tests unitaires passent\net le linter ne retourne aucune erreur\"\n\n/goal \"L'API retourne les bonnes réponses\npour les 5 scénarios de test documentés\ndans tests/scenarios.md\"\n\n/goal \"Le build Docker se lance\nsans erreur et l'app répond sur :3000\"",
+        why: "/goal transforme Claude d'un assistant passif en agent autonome qui itère jusqu'au résultat."
+      }
+    ]
+  },
+  {
+    id: "skills", icon: "🧩", title: "Skills & Personnalisation", subtitle: "Spécialiser pour dominer",
+    color: "#F3E5F5", accent: "#7B1FA2",
+    tips: [
+      {
+        title: "Skills ultra-ciblées > méga-agent", priority: "ARCHITECTURE",
+        content: "Créer des skills courtes et spécialisées plutôt qu'un prompt monstre. Un petit contexte bien écrit bat toujours un prompt de 2000 lignes.",
+        code: "# /skills/n8n-workflow.md\n---\nname: n8n-workflow-builder\ntrigger: \"n8n, workflow, automatisation\"\n---\n\nTu es expert n8n.\nConventions:\n- Nommer les nodes: [Action] - [Objet]\n- Toujours ajouter un Error Trigger\n- Utiliser les credentials via ENV\n- Tester avec des données mock d'abord\n- Documenter chaque workflow\n  dans workflows/README.md",
+        why: "Pour 3ADKAgency, des skills n8n, Notion, prospection, facturation = un Claude spécialisé pour chaque mission client."
+      },
+      {
+        title: "Hooks qualité — garde-fous automatiques", priority: "FIABILITÉ",
+        content: "Les hooks s'exécutent automatiquement avant/après les actions de Claude. Lint, tests, vérifications de sécurité — sans intervention manuelle.",
+        code: "# .claude/hooks/pre-commit.sh\n#!/bin/bash\n\n# Lint automatique\nnpx eslint --fix .\n\n# Vérifier qu'aucun secret n'est exposé\ngrep -r \"API_KEY\\|SECRET\\|PASSWORD\" src/\nif [ $? -eq 0 ]; then\n  echo \"⚠️ SECRET DÉTECTÉ — commit bloqué\"\n  exit 1\nfi\n\n# Tests unitaires\nnpm test -- --bail\nif [ $? -ne 0 ]; then\n  echo \"❌ Tests échoués — commit bloqué\"\n  exit 1\nfi\n\necho \"✅ Tous les checks passent\"",
+        why: "Les hooks transforment Claude Code d'un outil 'espérons que ça marche' en pipeline de qualité industrielle."
+      },
+      {
+        title: "Slash commands personnalisées", priority: "PRODUCTIVITÉ",
+        content: "Automatiser les actions récurrentes : tests, commits, revues, déploiements. Une commande = un workflow complet.",
+        code: "# Exemples de slash commands\n\n/test → lance les tests + affiche le coverage\n/deploy-staging → build + push + deploy staging\n/review → analyse le diff, check qualité,\n          suggère améliorations\n/doc → génère la doc API depuis le code\n/clean → lint + format + fix imports\n/audit → vérifie dépendances + sécurité\n\n# Créer une commande\n# .claude/commands/deploy-staging.md\nLance le build production,\npush sur la branche staging,\net vérifie que le health check répond 200.",
+        why: "Chaque slash command économise 2-5 minutes. Sur une journée de dev, ça fait 30-60 minutes récupérées."
+      }
+    ]
+  },
+  {
+    id: "advanced", icon: "🚀", title: "Niveau Expert", subtitle: "Production & intégration",
+    color: "#FFEBEE", accent: "#C62828",
+    tips: [
+      {
+        title: "Mode Auto — autonomie contrôlée", priority: "PUISSANCE",
+        content: "Le mode auto réduit les interruptions : Claude exécute sans demander confirmation à chaque étape. Un classificateur intégré bloque les actions destructrices.",
+        code: "# Quand utiliser le mode auto\n\n✅ BON pour :\n- Refactoring d'un module bien testé\n- Génération de code boilerplate\n- Migration de données structurée\n- Corrections de lint en masse\n\n⚠️ RISQUÉ pour :\n- Modifications de base de données prod\n- Changements d'infrastructure\n- Code touchant à la sécurité/auth\n- Déploiements en production\n\n# Activer avec des garde-fous\n→ Configurer les règles de refus\n→ Hooks pre-commit obligatoires\n→ Toujours sur une branche, jamais main",
+        why: "Le mode auto multiplie la vitesse par 3-5x sur les tâches bien bornées. La clé : des garde-fous solides."
+      },
+      {
+        title: "/ultrareview — revue de code cloud", priority: "CI/CD",
+        content: "Revue de code automatisée dans le cloud, conçue pour les pipelines CI. Claude analyse les pull requests et détecte bugs, vulnérabilités, et problèmes de qualité.",
+        code: "# Intégration CI/CD\n\n# GitHub Actions — revue automatique\nname: Claude Code Review\non:\n  pull_request:\n    types: [opened, synchronize]\n\njobs:\n  review:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - name: Claude Review\n        run: claude /ultrareview\n        env:\n          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_KEY }}",
+        why: "Chaque PR est revue par un agent expert avant le merge. Les bugs détectés en review coûtent 10x moins qu'en production."
+      },
+      {
+        title: "Intégrations MCP — Claude dans l'écosystème", priority: "ÉCOSYSTÈME",
+        content: "Claude Code connecté à GitHub, Slack, Jira, bases de données, CI/CD via MCP. Il ne génère plus juste du code — il orchestre un pipeline complet.",
+        code: "# Intégrations MCP typiques\n\n┌──────────┐     ┌───────────┐\n│  GitHub  │────▶│           │\n└──────────┘     │           │\n┌──────────┐     │  Claude   │\n│  Slack   │◀───▶│   Code    │\n└──────────┘     │   + MCP   │\n┌──────────┐     │           │\n│  Notion  │────▶│           │\n└──────────┘     │           │\n┌──────────┐     │           │\n│ Database │◀───▶│           │\n└──────────┘     └───────────┘\n\n# Workflow réel :\n1. Ticket Jira créé\n2. Claude crée la branche + code\n3. PR auto + review\n4. Notification Slack au reviewer\n5. Merge + deploy + update Notion",
+        why: "Pour 3ADKAgency, c'est exactement ce qu'on vend aux clients : l'automatisation end-to-end. Claude Code est un outil de démonstration vivant."
+      },
+      {
+        title: "Routines & tâches cloud", priority: "NOUVEAU",
+        content: "Exécution de jobs planifiés ou déclenchés par événement. Claude Code devient un cron intelligent qui peut analyser, alerter, et agir.",
+        code: "# Cas d'usage pour 3ADKAgency\n\n# Audit quotidien des workflows n8n\n→ Cron: chaque matin à 7h\n→ Claude vérifie les exécutions échouées\n→ Génère un rapport + alerte Slack\n\n# Revue hebdo du code client\n→ Trigger: chaque vendredi 14h\n→ Claude analyse les dépôts clients\n→ Détecte les dépendances obsolètes\n→ Crée les PRs de mise à jour\n\n# Monitoring temps réel\n→ Trigger: webhook erreur production\n→ Claude analyse les logs\n→ Propose un fix + crée le ticket",
+        why: "Production continue plutôt que réactive. Claude Code surveille et maintient pendant que l'équipe travaille sur le nouveau."
+      }
+    ]
+  },
+  {
+    id: "cheatsheet", icon: "📋", title: "Cheat Sheet", subtitle: "Commandes et raccourcis essentiels",
+    color: "#E0F2F1", accent: "#00695C",
+    tips: [
+      {
+        title: "Commandes essentielles", priority: "RÉFÉRENCE",
+        content: "Les commandes les plus utilisées au quotidien, classées par fréquence d'utilisation.",
+        code: "# Navigation & Contexte\n/compact        Compresser le contexte\n/goal \"...\"     Objectif persistant\n/clear          Vider la conversation\n\n# Qualité\n/ultrareview    Revue de code cloud\n/review         Revue locale\n/test           Lancer les tests\n\n# Agents\nclaude agents   Vue multi-sessions\n\n# Fichiers\n.claudeignore   Exclure des fichiers\nCLAUDE.md       Mémoire projet\n.claude/        Config et commands\n\n# Mode\nFast mode       Opus 4.7 (plus puissant)\nAuto mode       Moins d'interruptions",
+        why: "Gardez cette liste visible pendant vos sessions. Les raccourcis les plus simples sont ceux qu'on oublie le plus."
+      },
+      {
+        title: "Template de prompt parfait", priority: "TEMPLATE",
+        content: "Structure de prompt qui maximise la qualité de sortie à chaque fois.",
+        code: "# Template universel\n\n## Contexte\n[Quel est le projet / la situation]\n\n## Objectif\n[Ce que je veux accomplir et POURQUOI]\n\n## Contraintes\n[Stack, conventions, limites, budget]\n\n## Fichiers à lire d'abord\n[Liste des fichiers pertinents]\n\n## Critères de succès\n[Comment je sais que c'est réussi]\n\n## Ce qu'il ne faut PAS faire\n[Anti-patterns à éviter]",
+        why: "Ce template force la clarté. Un prompt structuré produit un code structuré."
+      }
+    ]
+  }
+];
+
+const priorityColors = {
+  "CRITIQUE":     { bg: "#FFCDD2", text: "#B71C1C" },
+  "RÈGLE D'OR":   { bg: "#FFF9C4", text: "#F57F17" },
+  "IMPORTANT":    { bg: "#BBDEFB", text: "#0D47A1" },
+  "SÉCURITÉ":     { bg: "#FFCDD2", text: "#C62828" },
+  "MÉTHODE":      { bg: "#C8E6C9", text: "#1B5E20" },
+  "PERFORMANCE":  { bg: "#B2DFDB", text: "#004D40" },
+  "AVANCÉ":       { bg: "#E1BEE7", text: "#6A1B9A" },
+  "PRO":          { bg: "#FFE0B2", text: "#E65100" },
+  "NOUVEAU":      { bg: "#B3E5FC", text: "#01579B" },
+  "ARCHITECTURE": { bg: "#D1C4E9", text: "#4527A0" },
+  "FIABILITÉ":    { bg: "#DCEDC8", text: "#33691E" },
+  "PRODUCTIVITÉ": { bg: "#FFF9C4", text: "#F9A825" },
+  "PUISSANCE":    { bg: "#FFCDD2", text: "#B71C1C" },
+  "CI/CD":        { bg: "#B2EBF2", text: "#006064" },
+  "ÉCOSYSTÈME":   { bg: "#F0F4C3", text: "#827717" },
+  "RÉFÉRENCE":    { bg: "#CFD8DC", text: "#37474F" },
+  "TEMPLATE":     { bg: "#D7CCC8", text: "#4E342E" }
+};
+
+let activeSection = "foundation";
+const openTips = {};
+
+function escapeHtml(s) {
+  const d = document.createElement("div");
+  d.textContent = s;
+  return d.innerHTML;
+}
+
+function renderTip(tip, accent, idx) {
+  const tipId = activeSection + "-" + idx;
+  if (openTips[tipId] === undefined) openTips[tipId] = false;
+  const isOpen = openTips[tipId];
+  const pc = priorityColors[tip.priority] || { bg: "#E0E0E0", text: "#424242" };
+
+  return `<div class="tip-card ${isOpen ? 'open' : ''}" 
+    style="border-color:${isOpen ? accent : '#E0E0E0'};--accent-shadow:${accent}22;--accent:${accent}"
+    onclick="toggleTip('${tipId}')">
+    <div class="tip-header">
+      <div class="tip-header-left">
+        <span class="priority-badge" style="background:${pc.bg};color:${pc.text}">${escapeHtml(tip.priority)}</span>
+        <span class="tip-title">${escapeHtml(tip.title)}</span>
+      </div>
+      <span class="tip-toggle ${isOpen ? 'open' : ''}">▼</span>
+    </div>
+    ${isOpen ? `<div class="tip-body">
+      <p>${escapeHtml(tip.content)}</p>
+      ${tip.code ? `<div class="code-block" id="code-${tipId}"><button class="copy-btn" onclick="event.stopPropagation();copyCode('${tipId}')">Copier</button>${escapeHtml(tip.code)}</div>` : ''}
+      <div class="why-box" style="--accent:${accent};background:${accent}0A">
+        <strong>💡 Pourquoi :</strong> ${escapeHtml(tip.why)}
+      </div>
+    </div>` : ''}
+  </div>`;
+}
+
+function render() {
+  const section = sections.find(s => s.id === activeSection);
+  const totalTips = sections.reduce((a, s) => a + s.tips.length, 0);
+
+  document.getElementById("tipCount").textContent = totalTips + " techniques pour exploiter Claude Code à sa pleine puissance";
+
+  document.getElementById("nav").innerHTML = sections.map(s => {
+    const isActive = s.id === activeSection;
+    return `<button class="nav-btn ${isActive ? 'active' : ''}" 
+      style="${isActive ? `background:${s.accent}` : ''}"
+      onclick="setSection('${s.id}')">
+      <span class="nav-icon">${s.icon}</span>
+      <span>${escapeHtml(s.title)}</span>
+    </button>`;
+  }).join("");
+
+  document.getElementById("content").innerHTML = `
+    <div style="animation:fadeSlide 300ms ease-out">
+      <div class="section-header">
+        <div class="section-header-row">
+          <span class="section-header-icon">${section.icon}</span>
+          <div>
+            <h2>${escapeHtml(section.title)}</h2>
+            <p class="subtitle">${escapeHtml(section.subtitle)}</p>
+          </div>
+        </div>
+        <div class="section-bar" style="background:${section.accent}"></div>
+      </div>
+      ${section.tips.map((t, i) => renderTip(t, section.accent, i)).join("")}
+    </div>
+  `;
+}
+
+function setSection(id) {
+  activeSection = id;
+  render();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function toggleTip(tipId) {
+  openTips[tipId] = !openTips[tipId];
+  render();
+}
+
+function copyCode(tipId) {
+  const el = document.getElementById("code-" + tipId);
+  if (!el) return;
+  const text = el.textContent.replace("Copier", "").replace("Copié ✓", "").trim();
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = el.querySelector(".copy-btn");
+    btn.textContent = "Copié ✓";
+    btn.classList.add("copied");
+    setTimeout(() => { btn.textContent = "Copier"; btn.classList.remove("copied"); }, 2000);
+  });
+}
+
+render();
+</script>
+</body>
+</html>

@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Content Factory Vidéo Virale — 3ADKAgency</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Inter', -apple-system, system-ui, sans-serif; background: #F8FAFC; min-height: 100vh; -webkit-font-smoothing: antialiased; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
+  ::-webkit-scrollbar { width: 4px; height: 4px; }
+  ::-webkit-scrollbar-thumb { background: #ccc; border-radius: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+
+  /* Header */
+  .header {
+    background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #4338ca 100%);
+    padding: 28px 20px 24px; color: #fff; position: relative; overflow: hidden;
+  }
+  .header-glow {
+    position: absolute; top: -20px; right: -20px; width: 120px; height: 120px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(251,191,36,0.2) 0%, transparent 70%);
+  }
+  .header-inner { position: relative; }
+  .header-badge {
+    display: inline-flex; align-items: center; gap: 8px; margin-bottom: 8px;
+  }
+  .header-badge-tag {
+    font-size: 9px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+    color: #FCD34D; background: rgba(252,211,77,0.15); padding: 3px 8px; border-radius: 5px;
+  }
+  .header h1 {
+    font-size: 22px; font-weight: 800; margin: 4px 0; letter-spacing: -0.5px; line-height: 1.25;
+  }
+  .header h1 span { color: #FCD34D; }
+  .header p { font-size: 12px; color: #a5b4fc; margin: 6px 0 0; line-height: 1.5; }
+
+  /* Navigation */
+  .nav {
+    display: flex; gap: 4px; padding: 10px 12px; overflow-x: auto;
+    background: #fff; border-bottom: 1px solid #e5e7eb; position: sticky; top: 0; z-index: 10;
+  }
+  .nav-btn {
+    display: flex; align-items: center; gap: 4px; padding: 6px 10px; border-radius: 7px;
+    border: none; cursor: pointer; font-size: 11px; font-weight: 500;
+    background: transparent; color: #666; white-space: nowrap;
+    transition: all 180ms ease-out; font-family: inherit;
+  }
+  .nav-btn:hover { background: #f3f4f6; }
+  .nav-btn.active { font-weight: 700; color: #fff; }
+  .nav-btn .nav-icon { font-size: 13px; }
+
+  /* Content */
+  .content { padding: 16px 14px 40px; max-width: 780px; margin: 0 auto; }
+  .phase-header { margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
+  .phase-header-icon { font-size: 22px; }
+  .phase-header h2 { font-size: 18px; font-weight: 800; color: #1a1a1a; letter-spacing: -0.3px; }
+  .phase-bar { height: 3px; width: 40px; border-radius: 3px; margin-top: 6px; }
+
+  /* Cards */
+  .card {
+    background: #fff; border-radius: 12px; padding: 16px 18px; margin-bottom: 14px;
+    border: 1px solid #e5e7eb; transition: border-color 200ms ease-out;
+  }
+  .card.open { border-color: var(--accent-40); }
+  .card-header { cursor: pointer; display: flex; justify-content: space-between; align-items: flex-start; }
+  .card-header h3 { font-size: 15px; font-weight: 700; color: #1a1a1a; flex: 1; }
+  .card-toggle {
+    color: #999; font-size: 12px; flex-shrink: 0; margin-top: 2px;
+    transition: transform 200ms ease-out; display: inline-block;
+  }
+  .card-toggle.open { transform: rotate(180deg); }
+  .card-body { margin-top: 12px; animation: fadeIn 200ms ease-out; }
+  .card-text { font-size: 13px; color: #444; line-height: 1.7; margin-bottom: 12px; white-space: pre-wrap; }
+  .card-text .bold { font-weight: 700; color: #1a1a1a; display: block; margin: 6px 0 2px; }
+  .card-text .arrow { padding-left: 8px; }
+
+  /* Code */
+  .code-block {
+    background: #0d1117; color: #e6edf3; padding: 14px 16px; border-radius: 8px;
+    font-size: 11px; line-height: 1.55; overflow-x: auto; margin: 0 0 12px;
+    font-family: 'JetBrains Mono', 'Fira Code', monospace; white-space: pre;
+    border: 1px solid #30363d; position: relative;
+  }
+  .copy-btn {
+    position: absolute; top: 8px; right: 8px; background: #21262d; border: 1px solid #30363d;
+    color: #8b949e; padding: 4px 10px; border-radius: 5px; font-size: 10px; cursor: pointer;
+    font-family: 'Inter', sans-serif; transition: all 150ms;
+  }
+  .copy-btn:hover { background: #30363d; color: #e6edf3; }
+  .copy-btn.copied { background: #238636; color: #fff; border-color: #238636; }
+
+  /* Why box */
+  .why-box {
+    border-left: 3px solid var(--accent); padding: 10px 14px; border-radius: 0 8px 8px 0;
+    font-size: 12px; color: #333; line-height: 1.55;
+  }
+  .why-box strong { color: var(--accent); }
+
+  /* Tip card */
+  .tip-card { border-radius: 12px; padding: 16px 18px; margin-bottom: 14px; }
+  .tip-card h3 { font-size: 15px; font-weight: 700; margin-bottom: 8px; }
+  .tip-card pre {
+    font-size: 12px; line-height: 1.6; color: #333; white-space: pre-wrap;
+    font-family: 'Inter', sans-serif;
+  }
+
+  /* Pipeline */
+  .pipeline-card { background: #fff; border-radius: 12px; padding: 16px 18px; margin-bottom: 14px; border: 1px solid #e5e7eb; }
+  .pipeline-card h3 { font-size: 15px; font-weight: 700; color: #1a1a1a; margin-bottom: 10px; }
+  .pipeline-step {
+    display: flex; align-items: center; gap: 10px; padding: 8px 0;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  .pipeline-step:last-child { border-bottom: none; }
+  .step-num {
+    width: 28px; height: 28px; border-radius: 50%; background: #0d1117; color: #fff;
+    display: flex; align-items: center; justify-content: center; font-size: 12px;
+    font-weight: 800; flex-shrink: 0;
+  }
+  .step-info { flex: 1; min-width: 0; }
+  .step-meta { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+  .step-label { font-weight: 700; font-size: 13px; color: #1a1a1a; }
+  .step-tool {
+    font-size: 9px; font-weight: 700; padding: 2px 6px; border-radius: 4px; letter-spacing: 0.3px;
+  }
+  .step-desc { font-size: 11.5px; color: #666; margin: 2px 0 0; line-height: 1.4; }
+
+  /* Footer */
+  .footer {
+    padding: 14px 16px; border-top: 1px solid #e5e7eb; background: #fff; text-align: center;
+  }
+  .footer p { font-size: 10px; color: #aaa; }
+
+  /* Section hidden */
+  .section { display: none; }
+  .section.active { display: block; animation: fadeIn 250ms ease-out; }
+
+  /* Print */
+  @media print {
+    .nav { position: static; }
+    .section { display: block !important; page-break-inside: avoid; margin-bottom: 24px; }
+    .code-block { font-size: 9px; }
+    .copy-btn { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <div class="header-glow"></div>
+  <div class="header-inner">
+    <div class="header-badge">
+      <span style="font-size:24px">🎬</span>
+      <span class="header-badge-tag">MÉTHODOLOGIE</span>
+    </div>
+    <h1>Content Factory<br><span>Vidéo Virale</span></h1>
+    <p>Pipeline Claude Code → voix off → sous-titres → vidéo prête à poster</p>
+  </div>
+</div>
+
+<!-- Navigation -->
+<div class="nav" id="nav"></div>
+
+<!-- Sections Container -->
+<div class="content" id="content"></div>
+
+<!-- Footer -->
+<div class="footer">
+  <p>Content Factory 3ADKAgency • Claude Code + ElevenLabs + ffmpeg • Mai 2026</p>
+</div>
+
+<script>
+// ─── DATA ─────────────────────────────────────────────
+const phases = [
+  {
+    id: "overview", icon: "🎯", title: "Vue d'ensemble", accent: "#6366F1",
+    blocks: [
+      {
+        type: "analysis", title: "Claude Code vs Cowork — Mon analyse",
+        content: `**Claude Code = le moteur de production.**\nIl exécute du code, appelle des APIs (ElevenLabs, Canva, Pexels), assemble des vidéos avec ffmpeg, génère des sous-titres, et orchestre tout le pipeline en mode agentique.\n\n**Cowork = le bras de recherche.**\nIl navigue le web, analyse la concurrence, extrait des tendances, alimente la phase stratégie. Mais il ne code pas et ne pilote pas d'API.\n\n**La combo optimale :**\nCowork fait la veille → Claude (chat) écrit les scripts → Claude Code produit la vidéo complète.`
+      },
+      {
+        type: "pipeline", title: "Pipeline complet — 7 étapes",
+        steps: [
+          { num: "1", label: "VEILLE", tool: "Cowork", desc: "Tendances, hooks viraux, analyse concurrence" },
+          { num: "2", label: "SCRIPT", tool: "Claude Chat", desc: "Script viral avec hooks, timecodes, CTA" },
+          { num: "3", label: "VOIX", tool: "Claude Code", desc: "ElevenLabs API → voix off MP3" },
+          { num: "4", label: "VISUELS", tool: "Claude Code", desc: "Pexels/Canva API → images/vidéos de fond" },
+          { num: "5", label: "SOUS-TITRES", tool: "Claude Code", desc: "Script → fichier .srt/.ass stylisé" },
+          { num: "6", label: "MONTAGE", tool: "Claude Code", desc: "ffmpeg → assemblage final MP4" },
+          { num: "7", label: "EXPORT", tool: "Claude Code", desc: "Multi-format (9:16, 1:1, 16:9)" }
+        ]
+      }
+    ]
+  },
+  {
+    id: "veille", icon: "🔍", title: "Phase 1 — Veille", accent: "#059669",
+    blocks: [
+      {
+        type: "method", title: "Cowork : Scanner les tendances",
+        content: `**Objectif :** Trouver les sujets, hooks et formats qui marchent MAINTENANT dans ta niche.\n\n**Prompt Cowork :**`,
+        code: `Analyse les 20 dernières vidéos virales sur TikTok et Instagram\ndans la niche "automatisation pour PME / productivité business".\n\nPour chaque vidéo identifie :\n- Le hook exact (3 premières secondes)\n- La structure (durée, rythme, transitions)\n- Le format (face caméra, voix off, screen record, mix)\n- Ce qui déclenche les commentaires\n- Le CTA utilisé\n\nClasse par taux d'engagement et donne-moi\nles 5 patterns les plus répétés.`,
+        why: "Cowork navigue le web et peut analyser visuellement les contenus. Claude Code ne peut pas faire ça."
+      },
+      {
+        type: "method", title: "Banque de hooks viraux",
+        content: `Construis une banque de hooks testés dans ta niche. Les 3 premières secondes décident de tout.`,
+        code: `# Hooks qui marchent pour l'automatisation PME\n\n## Hook "Chiffre choc"\n"J'ai fait gagner 47h par mois à un artisan\navec un outil gratuit."\n\n## Hook "Erreur courante"\n"Si tu fais encore tes devis à la main en 2026,\nregarde ça."\n\n## Hook "Révélation"\n"Ce que personne ne te dit sur l'IA\nquand t'es une petite boîte."\n\n## Hook "Avant/Après"\n"Avant : 3h de facturation par semaine.\nAprès : 12 minutes. Voilà comment."\n\n## Hook "POV"\n"POV : tu découvres que ton concurrent\na automatisé ce que tu fais à la main."`,
+        why: "80% de la viralité se joue dans le hook. Stocke les hooks testés pour les recycler et les A/B tester."
+      }
+    ]
+  },
+  {
+    id: "script", icon: "✍️", title: "Phase 2 — Script", accent: "#D97706",
+    blocks: [
+      {
+        type: "method", title: "Prompt Claude pour script viral",
+        content: `Le script est le squelette de tout. Il doit être structuré avec des timecodes précis pour que Claude Code puisse ensuite automatiser la production.`,
+        code: `Tu es un scriptwriter expert en vidéos virales\npour les réseaux sociaux (TikTok, Reels, Shorts).\n\nÉcris un script de 60 secondes sur ce sujet :\n"Comment automatiser ses relances clients\nquand on est artisan"\n\nContraintes :\n- Format voix off (pas face caméra)\n- Hook verbal dans les 2 premières secondes\n- Structure : Hook → Problème → Solution → Preuve → CTA\n- Phrases courtes (max 12 mots)\n- Ton direct, comme un pote expert\n- Indique les timecodes [00:00] à [01:00]\n- Indique entre crochets [VISUEL: ...] ce qu'on voit\n- CTA : "Suis-moi pour plus d'astuces comme ça"\n\nDonne 3 variantes du hook pour A/B testing.\n\nFormat de sortie :\n---\nHOOK VARIANT A: "..."\nHOOK VARIANT B: "..."\nHOOK VARIANT C: "..."\n---\n[00:00-00:03] [VISUEL: ...] "Texte voix off..."\n[00:03-00:08] [VISUEL: ...] "Texte voix off..."\n...`,
+        why: "Les timecodes + visuels permettent à Claude Code de synchroniser audio, images et sous-titres automatiquement."
+      },
+      {
+        type: "template", title: "Structure de script universelle",
+        content: `Chaque vidéo virale suit le même squelette. Voici le template 3ADK :`,
+        code: `# TEMPLATE SCRIPT VIRAL 3ADK — 60 secondes\n\n[00:00-00:03] HOOK — Stopper le scroll\n  → Chiffre choc OU question provocante\n  → [VISUEL: texte gros à l'écran + mouvement]\n\n[00:03-00:08] PROBLÈME — Créer l'identification\n  → "Tu connais ce moment où..."\n  → [VISUEL: situation du quotidien reconnaissable]\n\n[00:08-00:25] SOLUTION — Montrer le comment\n  → 3 étapes max, ultra simples\n  → [VISUEL: screen recording OU schéma animé]\n\n[00:25-00:45] PREUVE — Crédibiliser\n  → Résultat concret (chiffres, avant/après)\n  → [VISUEL: dashboard, résultat, témoignage]\n\n[00:45-00:55] TWIST — Relancer l'attention\n  → "Et le meilleur dans tout ça..."\n  → [VISUEL: révélation visuelle]\n\n[00:55-01:00] CTA — Déclencher l'action\n  → Un seul CTA clair\n  → [VISUEL: texte CTA + flèche follow]`
+      }
+    ]
+  },
+  {
+    id: "voix", icon: "🎙️", title: "Phase 3 — Voix Off", accent: "#DC2626",
+    blocks: [
+      {
+        type: "method", title: "Claude Code + ElevenLabs API",
+        content: `Claude Code appelle l'API ElevenLabs pour générer la voix off à partir du script. Il récupère aussi les timestamps mot par mot pour les sous-titres.`,
+        code: `# Prompt Claude Code :\n\n"Crée un script Python qui :\n\n1. Lit le fichier script.txt\n2. Appelle l'API ElevenLabs (eleven_multilingual_v2)\n   avec la voix 'Antoine' (français, ton conversationnel)\n3. Génère le fichier audio voix-off.mp3\n4. Utilise l'endpoint 'forced alignment' pour récupérer\n   les timestamps mot par mot\n5. Sauvegarde les timestamps dans timestamps.json\n\nParamètres voix :\n- stability: 0.55 (naturel, pas robotique)\n- similarity_boost: 0.75\n- style: 0.35 (léger style, pas trop théâtral)\n- speed: 1.05 (légèrement plus rapide = plus dynamique)\n\nUtilise la variable d'environnement ELEVENLABS_API_KEY."`,
+        why: "ElevenLabs est le standard qualité en TTS. Le 'forced alignment' donne les timestamps mot par mot — essentiel pour les sous-titres style TikTok."
+      },
+      {
+        type: "method", title: "Alternative gratuite : OpenAI TTS",
+        content: `Si le budget est serré, l'API TTS d'OpenAI fonctionne aussi mais sans le forced alignment natif.`,
+        code: `# Alternative avec OpenAI TTS (moins cher)\n\nfrom openai import OpenAI\n\nclient = OpenAI()\nresponse = client.audio.speech.create(\n    model="tts-1-hd",\n    voice="onyx",  # voix grave, posée\n    input=script_text,\n    speed=1.05\n)\n\n# Sauvegarder l'audio\nresponse.stream_to_file("voix-off.mp3")\n\n# Pour les timestamps, utiliser Whisper ensuite :\ntranscript = client.audio.transcriptions.create(\n    model="whisper-1",\n    file=open("voix-off.mp3", "rb"),\n    response_format="verbose_json",\n    timestamp_granularities=["word"]\n)`,
+        why: "OpenAI TTS coûte ~15$ pour 1M de caractères vs ~30$ chez ElevenLabs. Mais la qualité ElevenLabs reste supérieure pour le français."
+      }
+    ]
+  },
+  {
+    id: "visuels", icon: "🎨", title: "Phase 4 — Visuels", accent: "#7C3AED",
+    blocks: [
+      {
+        type: "method", title: "Sourcer les visuels automatiquement",
+        content: `Claude Code peut chercher et télécharger des vidéos/images de fond via les APIs Pexels (gratuit) ou Canva.`,
+        code: `# Prompt Claude Code :\n\n"Crée un script qui :\n\n1. Lit le fichier script.txt et extrait\n   les indications [VISUEL: ...]\n2. Pour chaque indication visuelle,\n   cherche sur l'API Pexels :\n   - 2-3 vidéos stock pertinentes (format vertical)\n   - Résolution minimum 1080x1920 (9:16)\n3. Télécharge les vidéos dans /assets/clips/\n4. Génère un fichier montage-plan.json qui mappe :\n   {\n     'timecode': '00:00-00:03',\n     'audio_segment': 'hook.mp3',\n     'visual': '/assets/clips/clip_001.mp4',\n     'subtitle_text': 'J\\\\'ai fait gagner...',\n     'text_overlay': 'J\\\\'ai fait gagner 47h/mois'\n   }\n\nAPI Pexels : variable PEXELS_API_KEY\nOrientation : portrait\nDurée clips : 5-15 secondes"`,
+        why: "Pexels est 100% gratuit pour usage commercial. L'API retourne des vidéos HD en vertical, parfait pour Reels/TikTok."
+      },
+      {
+        type: "method", title: "Option Canva pour les overlays",
+        content: `Utiliser l'API Canva (connectée via MCP) pour générer les text overlays et éléments graphiques brandés.`,
+        code: `# Via le MCP Canva connecté :\n\n1. Créer un template de text overlay 3ADK\n   - Police : bold, lisible sur mobile\n   - Couleurs : palette 3ADK\n   - Animation : apparition mot par mot\n\n2. Pour chaque segment du script :\n   → Générer l'overlay texte via Canva API\n   → Exporter en PNG transparent\n   → Stocker dans /assets/overlays/\n\n# Alternative rapide sans API :\nClaude Code peut générer les overlays\ndirectement en SVG puis les convertir en PNG\navec ImageMagick ou Pillow.`,
+        why: "Les text overlays sont ce qui rend une vidéo 'pro'. Texte gros, lisible, animé = retention x2 sur mobile."
+      }
+    ]
+  },
+  {
+    id: "subtitles", icon: "💬", title: "Phase 5 — Sous-titres", accent: "#0891B2",
+    blocks: [
+      {
+        type: "method", title: "Sous-titres style TikTok (ASS)",
+        content: `Les sous-titres style TikTok/Hormozi avec mot par mot en gras et couleur sont le standard viral. Claude Code génère le fichier .ass à partir des timestamps ElevenLabs.`,
+        code: `# Prompt Claude Code :\n\n"Crée un script Python qui :\n\n1. Lit timestamps.json (sortie ElevenLabs)\n2. Génère un fichier subtitles.ass avec :\n   - Police : Montserrat Bold, 42px\n   - Couleur principale : blanc (#FFFFFF)\n   - Mot actif : jaune (#FFD700) en gras\n   - Contour : noir 3px (lisibilité)\n   - Position : centre-bas (légèrement au-dessus)\n   - Affichage : 3-4 mots à la fois max\n   - Le mot prononcé est mis en surbrillance\n     en temps réel (karaoké effect)\n\n3. Chaque groupe de mots dure 1.5-2.5 secondes\n4. Pas de ligne de plus de 30 caractères\n\nFormat ASS car ffmpeg le supporte nativement\navec le filtre 'ass' et gère les styles avancés."`,
+        why: "Le format ASS (pas SRT) permet les effets karaoké, les couleurs par mot, les animations — exactement ce qu'on voit sur les vidéos virales."
+      },
+      {
+        type: "tip", title: "Règles d'or des sous-titres viraux",
+        content: `→ MAX 3-4 mots affichés en même temps\n→ Le mot-clé de chaque phrase en COULEUR\n→ Police BOLD, jamais de serif\n→ Taille 42-48px minimum (lisible sur mobile)\n→ Toujours un contour/ombre (contraste)\n→ Position : 70% de la hauteur (pas tout en bas)\n→ Jamais de sous-titre pendant le hook visuel\n   (les 0.5 premières secondes = visuel pur)`
+      }
+    ]
+  },
+  {
+    id: "montage", icon: "🎬", title: "Phase 6 — Montage", accent: "#B45309",
+    blocks: [
+      {
+        type: "method", title: "Claude Code + ffmpeg — Assemblage final",
+        content: `C'est ici que tout se combine. Claude Code génère la commande ffmpeg qui assemble clips + audio + sous-titres + overlays en un seul MP4.`,
+        code: `# Prompt Claude Code :\n\n"Crée un script Python/bash qui utilise ffmpeg pour :\n\n1. Assembler les clips vidéo selon montage-plan.json\n   - Chaque clip est coupé à la durée du segment\n   - Transitions : crossfade 0.3s entre clips\n\n2. Superposer la voix off (voix-off.mp3)\n   - Volume voix : 100%\n   - Si clip a du son original : volume fond à 15%\n\n3. Ajouter une musique de fond\n   - Fichier : /assets/music/lofi-chill.mp3\n   - Volume : 12% (jamais couvrir la voix)\n   - Fade out sur les 3 dernières secondes\n\n4. Burn les sous-titres (subtitles.ass)\n   - Filtre ass de ffmpeg\n   - Rendu hardcodé dans la vidéo\n\n5. Ajouter les overlays texte aux bons timecodes\n\n6. Export final :\n   - Codec : H.264, CRF 18 (qualité haute)\n   - Audio : AAC 192kbps\n   - Résolution : 1080x1920 (9:16)\n   - FPS : 30\n   - Fichier : output/video-finale.mp4"`,
+        why: "ffmpeg est gratuit, installé partout, et Claude Code le maîtrise parfaitement. Pas besoin de logiciel de montage payant."
+      },
+      {
+        type: "method", title: "Multi-export pour chaque plateforme",
+        content: `Une seule vidéo source, mais exportée dans tous les formats requis.`,
+        code: `# Prompt Claude Code :\n\n"À partir de video-finale.mp4 (1080x1920, 9:16),\ngénère les exports suivants avec ffmpeg :\n\n1. tiktok.mp4\n   → 1080x1920, 9:16, max 60s, max 287MB\n\n2. reel-instagram.mp4\n   → 1080x1350, 4:5 (crop intelligent du 9:16)\n   → max 90s\n\n3. youtube-short.mp4\n   → 1080x1920, 9:16, max 60s\n\n4. linkedin-feed.mp4\n   → 1080x1080, 1:1 (crop centre + fond flou)\n   → Sous-titres repositionnés au centre\n\n5. story.mp4\n   → 1080x1920, max 15s (version hook only)\n\nChaque export optimisé pour le bitrate max\nde la plateforme cible."`,
+        why: "1 vidéo source → 5 exports = 5 posts sur 5 plateformes. Le recyclage de contenu sans effort supplémentaire."
+      }
+    ]
+  },
+  {
+    id: "automation", icon: "⚙️", title: "Phase 7 — Automatiser", accent: "#4338CA",
+    blocks: [
+      {
+        type: "method", title: "Le workflow n8n complet",
+        content: `Pour industrialiser, on connecte tout dans un workflow n8n qui produit une vidéo par jour automatiquement.`,
+        code: `# Architecture n8n — Content Factory\n\n┌─────────────┐\n│  TRIGGER     │ Cron: chaque jour à 6h\n│  quotidien   │ OU webhook depuis Notion\n└──────┬───────┘\n       ▼\n┌─────────────┐\n│  CLAUDE API  │ Génère le script du jour\n│  (script)    │ depuis le calendrier éditorial\n└──────┬───────┘\n       ▼\n┌─────────────┐\n│ ELEVENLABS   │ Génère voix off MP3\n│ (TTS + align)│ + timestamps mot par mot\n└──────┬───────┘\n       ▼\n┌─────────────┐\n│  PEXELS API  │ Télécharge clips vidéo\n│  (visuels)   │ selon mots-clés du script\n└──────┬───────┘\n       ▼\n┌─────────────┐\n│ CLAUDE CODE  │ Génère sous-titres .ass\n│ (subtitles)  │ + commande ffmpeg\n└──────┬───────┘\n       ▼\n┌─────────────┐\n│   FFMPEG     │ Assemble tout → MP4 final\n│  (montage)   │ + multi-export plateformes\n└──────┬───────┘\n       ▼\n┌─────────────┐\n│   NOTION     │ Log la vidéo produite\n│  (tracking)  │ statut, métriques, lien\n└──────┬───────┘\n       ▼\n┌─────────────┐\n│  SLACK/EMAIL │ Notification "vidéo prête"\n│  (alerte)    │ → review humaine avant post\n└─────────────┘`,
+        why: "C'est exactement le type d'automatisation qu'on vend chez 3ADK. La content factory est un use case de démonstration parfait pour les clients PME."
+      },
+      {
+        type: "method", title: "Coûts de production estimés",
+        content: `Budget par vidéo en production automatisée :`,
+        code: `# Coût par vidéo (60 secondes)\n\nElevenLabs TTS      ~0.15€ (150 mots ≈ 900 char)\nClaude API script   ~0.03€ (1 appel Sonnet)\nPexels vidéos       0.00€  (gratuit)\nffmpeg              0.00€  (open source)\nServeur/compute     ~0.05€ (si cloud)\n─────────────────────────────\nTOTAL par vidéo     ~0.23€\n\n# À l'échelle :\n30 vidéos/mois      ~7€/mois\n365 vidéos/an       ~84€/an\n\n# Comparaison :\nFreelance monteur   150-500€/vidéo\nAgence content      2000-5000€/mois\nVOUS avec ce système 7€/mois + votre temps`,
+        why: "Le ROI est délirant. 7€/mois pour 30 vidéos pro vs 4500€+ en agence. C'est un argument de vente massif pour 3ADK."
+      },
+      {
+        type: "tip", title: "⚡ Quick Start — Première vidéo en 30 minutes",
+        content: `1. Ouvrir Claude Code\n2. "Lis le SKILL.md et installe ffmpeg + les dépendances Python"\n3. Coller le script viral (écrit dans Claude chat)\n4. "Génère la voix off via ElevenLabs, télécharge 5 clips Pexels sur le thème [X], crée les sous-titres ASS style TikTok, et assemble le tout en MP4 vertical"\n5. Review la vidéo\n6. "Exporte en format Reel, TikTok et LinkedIn"\n7. Poster 🚀`
+      }
+    ]
+  }
+];
+
+// ─── STATE ────────────────────────────────────────────
+let activePhase = "overview";
+const openCards = {};
+
+// ─── RENDER ───────────────────────────────────────────
+function toolColor(tool) {
+  if (tool === "Cowork") return "#059669";
+  if (tool === "Claude Chat") return "#6366F1";
+  return "#DC2626";
+}
+
+function escapeHtml(s) {
+  const d = document.createElement("div");
+  d.textContent = s;
+  return d.innerHTML;
+}
+
+function renderContent(text) {
+  return text.split("\n").map(line => {
+    if (line.startsWith("**") && line.endsWith("**")) {
+      return `<span class="bold">${escapeHtml(line.replace(/\*\*/g, ""))}</span>`;
+    }
+    if (line.startsWith("→")) {
+      return `<span class="arrow" style="color:var(--accent)">${escapeHtml(line)}</span>\n`;
+    }
+    return escapeHtml(line) + "\n";
+  }).join("");
+}
+
+function renderBlock(block, accent, idx) {
+  const cardId = activePhase + "-" + idx;
+  if (openCards[cardId] === undefined) openCards[cardId] = true;
+  const isOpen = openCards[cardId];
+
+  if (block.type === "pipeline") {
+    return `<div class="pipeline-card">
+      <h3>${escapeHtml(block.title)}</h3>
+      ${block.steps.map(s => {
+        const tc = toolColor(s.tool);
+        return `<div class="pipeline-step">
+          <div class="step-num">${s.num}</div>
+          <div class="step-info">
+            <div class="step-meta">
+              <span class="step-label">${escapeHtml(s.label)}</span>
+              <span class="step-tool" style="background:${tc}15;color:${tc}">${escapeHtml(s.tool)}</span>
+            </div>
+            <div class="step-desc">${escapeHtml(s.desc)}</div>
+          </div>
+        </div>`;
+      }).join("")}
+    </div>`;
+  }
+
+  if (block.type === "tip") {
+    return `<div class="tip-card" style="background:${accent}08;border:1px solid ${accent}30">
+      <h3 style="color:${accent}">${escapeHtml(block.title)}</h3>
+      <pre>${escapeHtml(block.content)}</pre>
+    </div>`;
+  }
+
+  return `<div class="card ${isOpen ? 'open' : ''}" style="--accent:${accent};--accent-40:${accent}40">
+    <div class="card-header" onclick="toggleCard('${cardId}')">
+      <h3>${escapeHtml(block.title)}</h3>
+      <span class="card-toggle ${isOpen ? 'open' : ''}">▼</span>
+    </div>
+    ${isOpen ? `<div class="card-body">
+      <div class="card-text">${renderContent(block.content)}</div>
+      ${block.code ? `<div class="code-block" id="code-${cardId}"><button class="copy-btn" onclick="copyCode(event, '${cardId}')">Copier</button>${escapeHtml(block.code)}</div>` : ''}
+      ${block.why ? `<div class="why-box" style="--accent:${accent};background:${accent}08"><strong>💡 Pourquoi : </strong>${escapeHtml(block.why)}</div>` : ''}
+    </div>` : ''}
+  </div>`;
+}
+
+function render() {
+  const phase = phases.find(p => p.id === activePhase);
+
+  // Nav
+  document.getElementById("nav").innerHTML = phases.map(p => {
+    const isActive = p.id === activePhase;
+    return `<button class="nav-btn ${isActive ? 'active' : ''}" 
+      style="${isActive ? `background:${p.accent}` : ''}" 
+      onclick="setPhase('${p.id}')">
+      <span class="nav-icon">${p.icon}</span>
+      <span>${escapeHtml(p.title.replace(/Phase \d — /, ""))}</span>
+    </button>`;
+  }).join("");
+
+  // Content
+  document.getElementById("content").innerHTML = `
+    <div class="phase-header">
+      <span class="phase-header-icon">${phase.icon}</span>
+      <div>
+        <h2>${escapeHtml(phase.title)}</h2>
+        <div class="phase-bar" style="background:${phase.accent}"></div>
+      </div>
+    </div>
+    ${phase.blocks.map((b, i) => renderBlock(b, phase.accent, i)).join("")}
+  `;
+}
+
+// ─── ACTIONS ──────────────────────────────────────────
+function setPhase(id) {
+  activePhase = id;
+  render();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function toggleCard(cardId) {
+  openCards[cardId] = !openCards[cardId];
+  render();
+}
+
+function copyCode(e, cardId) {
+  e.stopPropagation();
+  const el = document.getElementById("code-" + cardId);
+  if (!el) return;
+  const text = el.textContent.replace("Copier", "").replace("Copié ✓", "").trim();
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = el.querySelector(".copy-btn");
+    btn.textContent = "Copié ✓";
+    btn.classList.add("copied");
+    setTimeout(() => { btn.textContent = "Copier"; btn.classList.remove("copied"); }, 2000);
+  });
+}
+
+// ─── INIT ─────────────────────────────────────────────
+render();
+</script>
+</body>
+</html>
